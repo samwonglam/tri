@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>吉伊卡哇的三角形領地任務｜小五數學面積方格紙</title>
+  <style>
+    :root {
+      --bg-cream: #fff9fb;
+      --bg-dots: #fce7f3;
+      --paper: #ffffff;
+      --chii-pink: #f472b6;
+      --chii-pink-light: #fdf2f8;
+      --chii-pink-border: #fbcfe8;
+      --hachi-blue: #38bdf8;
+      --hachi-blue-dark: #0284c7;
+      --hachi-blue-light: #f0f9ff;
+      --hachi-blue-border: #bae6fd;
+      --usagi-yellow: #facc15;
+      --usagi-yellow-light: #fefce8;
+      --usagi-yellow-border: #fef08a;
+      --usagi-orange: #ca8a04;
+      --ink-brown: #4a3728;
+      --ink-muted: #7c6553;
+      --line-soft: #eadcd3;
+      --green-ok: #16a34a;
+      --green-light: #f0fdf4;
+      --green-border: #bbf7d0;
+      --red-height: #e11d48;
+      --shadow-cute: 0 5px 0 #e5d0c5;
+      --radius-lg: 22px;
+      --radius-md: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "PingFang HK", "Microsoft JhengHei", "Noto Sans TC", sans-serif;
+      background-color: var(--bg-cream);
+      background-image:
+        radial-gradient(var(--bg-dots) 2.2px, transparent 2.2px),
+        radial-gradient(#e0f2fe 2.2px, var(--bg-cream) 2.2px);
+      background-size: 36px 36px;
+      background-position: 0 0, 18px 18px;
+      color: var(--ink-brown);
+      line-height: 1.55;
+      padding: 16px 12px 44px;
+    }
+
+    .notebook-shell {
+      max-width: 1160px;
+      margin: 0 auto;
+      background: var(--paper);
+      border: 3px solid var(--ink-brown);
+      border-radius: 26px;
+      box-shadow: 0 8px 0 #d9c3b6, 0 14px 32px rgba(74, 55, 40, 0.08);
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* 頂部吉伊卡哇裝飾橫條 */
+    .top-deco-bar {
+      background: linear-gradient(90deg, #fce7f3 0%, #e0f2fe 50%, #fef9c3 100%);
+      border-bottom: 3px dashed var(--ink-brown);
+      padding: 12px 22px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .title-group {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .chii-avatars {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .avatar-badge {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border: 2.5px solid var(--ink-brown);
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 3px 0 rgba(74, 55, 40, 0.16);
+      flex-shrink: 0;
+    }
+
+    .title-text h1 {
+      font-size: 1.38rem;
+      font-weight: 800;
+      color: var(--ink-brown);
+      letter-spacing: 0.02em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .grade-pill {
+      font-size: 0.78rem;
+      background: var(--ink-brown);
+      color: #fff;
+      padding: 2px 10px;
+      border-radius: 999px;
+      font-weight: 700;
+    }
+
+    .title-text p {
+      font-size: 0.86rem;
+      color: var(--ink-muted);
+      font-weight: 600;
+    }
+
+    .reward-counter {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #fff;
+      border: 2.5px solid var(--ink-brown);
+      border-radius: 999px;
+      padding: 6px 14px;
+      box-shadow: 0 3px 0 #e5d0c5;
+      font-size: 0.88rem;
+      font-weight: 800;
+    }
+
+    .stamp-dot {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--chii-pink-light);
+      color: #be185d;
+      border: 1.5px solid var(--chii-pink);
+      padding: 2px 9px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+    }
+
+    /* 步驟一：任務輸入橫幅 */
+    .mission-bar {
+      margin: 16px 20px 0;
+      padding: 14px 18px;
+      background: var(--usagi-yellow-light);
+      border: 2.5px solid var(--ink-brown);
+      border-radius: var(--radius-md);
+      box-shadow: 0 4px 0 #e5d0c5;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .mission-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .step-tag {
+      background: var(--chii-pink);
+      color: #fff;
+      border: 2px solid var(--ink-brown);
+      font-weight: 800;
+      font-size: 0.82rem;
+      padding: 3px 10px;
+      border-radius: 999px;
+    }
+
+    .mission-label {
+      font-weight: 800;
+      font-size: 0.98rem;
+    }
+
+    .area-input-box {
+      display: inline-flex;
+      align-items: center;
+      background: #fff;
+      border: 2.5px solid var(--ink-brown);
+      border-radius: 12px;
+      padding: 3px 10px;
+      gap: 6px;
+    }
+
+    .area-input-box input {
+      width: 72px;
+      border: none;
+      outline: none;
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #be185d;
+      text-align: center;
+      font-family: inherit;
+      background: transparent;
+    }
+
+    .area-unit {
+      font-weight: 800;
+      font-size: 0.92rem;
+      color: var(--ink-muted);
+    }
+
+    .btn {
+      appearance: none;
+      border: 2.5px solid var(--ink-brown);
+      background: #fff;
+      color: var(--ink-brown);
+      font-family: inherit;
+      font-size: 0.88rem;
+      font-weight: 800;
+      padding: 7px 14px;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 3px 0 var(--ink-brown);
+      transition: transform 0.08s ease, box-shadow 0.08s ease, background 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn:hover:not(:disabled) {
+      background: #fffdf5;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 0 var(--ink-brown);
+    }
+
+    .btn:active:not(:disabled) {
+      transform: translateY(2px);
+      box-shadow: 0 1px 0 var(--ink-brown);
+    }
+
+    .btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .btn-pink {
+      background: #fbcfe8;
+      color: var(--ink-brown);
+    }
+
+    .btn-pink:hover:not(:disabled) {
+      background: #f9a8d4;
+    }
+
+    .btn-blue {
+      background: #bae6fd;
+      color: var(--ink-brown);
+    }
+
+    .btn-blue:hover:not(:disabled) {
+      background: #7dd3fc;
+    }
+
+    .btn-yellow {
+      background: #fef08a;
+      color: var(--ink-brown);
+    }
+
+    .preset-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .preset-label {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--ink-muted);
+    }
+
+    .preset-chip {
+      border: 2px solid var(--ink-brown);
+      background: #fff;
+      color: var(--ink-brown);
+      border-radius: 999px;
+      padding: 4px 11px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.12s;
+    }
+
+    .preset-chip:hover {
+      background: var(--chii-pink-light);
+    }
+
+    .preset-chip.active {
+      background: var(--hachi-blue);
+      color: #fff;
+    }
+
+    /* 主工作區雙欄佈局 */
+    .workspace {
+      display: grid;
+      grid-template-columns: 1.28fr 1fr;
+      gap: 20px;
+      padding: 18px 20px 24px;
+      align-items: start;
+    }
+
+    @media (max-width: 940px) {
+      .workspace {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* 左側方格紙畫布卡片 */
+    .canvas-card {
+      background: #fff;
+      border: 2.5px solid var(--ink-brown);
+      border-radius: var(--radius-lg);
+      padding: 14px;
+      box-shadow: var(--shadow-cute);
+    }
+
+    .canvas-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .step-progress {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--hachi-blue-light);
+      border: 2px solid var(--ink-brown);
+      border-radius: 999px;
+      padding: 4px 12px;
+      font-size: 0.85rem;
+      font-weight: 800;
+    }
+
+    .unit-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      background: #fef9c3;
+      border: 2px solid var(--ink-brown);
+      padding: 4px 10px;
+      border-radius: 999px;
+    }
+
+    .unit-square-icon {
+      width: 14px;
+      height: 14px;
+      background: rgba(56, 189, 248, 0.35);
+      border: 2px solid #0284c7;
+      display: inline-block;
+    }
+
+    /* 溫和提醒橫幅 */
+    .gentle-banner {
+      display: none;
+      margin-bottom: 10px;
+      padding: 10px 14px;
+      background: #fff1f2;
+      border: 2.5px solid #f43f5e;
+      border-radius: 14px;
+      font-size: 0.86rem;
+      font-weight: 700;
+      color: #881337;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .gentle-banner.show {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .obtuse-banner {
+      display: none;
+      margin-bottom: 10px;
+      padding: 10px 14px;
+      background: #f0f9ff;
+      border: 2.5px solid #0284c7;
+      border-radius: 14px;
+      font-size: 0.86rem;
+      font-weight: 700;
+      color: #0c4a6e;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .obtuse-banner.show {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .canvas-container {
+      position: relative;
+      width: 100%;
+      background: #fffdf9;
+      border: 2.5px solid var(--ink-brown);
+      border-radius: 16px;
+      overflow: hidden;
+      touch-action: none;
+      user-select: none;
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: auto;
+      cursor: crosshair;
+    }
+
+    .canvas-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .tool-left, .tool-right {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* 右側：吉伊卡哇夥伴檢查與引導面板 */
+    .side-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .check-hero-card {
+      background: linear-gradient(180deg, #fdf2f8 0%, #ffffff 100%);
+      border: 2.5px solid var(--ink-brown);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      box-shadow: var(--shadow-cute);
+    }
+
+    .character-stage {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .char-figure {
+      width: 74px;
+      height: 74px;
+      background: #fff;
+      border: 2.5px solid var(--ink-brown);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 3px 0 #e5d0c5;
+    }
+
+    .speech-bubble {
+      position: relative;
+      background: #fff;
+      border: 2.5px solid var(--ink-brown);
+      border-radius: 16px;
+      padding: 10px 14px;
+      flex: 1;
+      font-size: 0.9rem;
+      font-weight: 700;
+      box-shadow: 0 3px 0 #f3e5dc;
+    }
+
+    .speech-speaker {
+      display: inline-block;
+      font-size: 0.76rem;
+      font-weight: 800;
+      padding: 1px 8px;
+      border-radius: 999px;
+      margin-bottom: 4px;
+      border: 1.5px solid var(--ink-brown);
+    }
+
+    .speaker-chii {
+      background: #fbcfe8;
+    }
+
+    .speaker-hachi {
+      background: #bae6fd;
+    }
+
+    .speaker-usagi {
+      background: #fef08a;
+    }
+
+    .big-check-btn {
+      width: 100%;
+      padding: 12px 16px;
+      font-size: 1.04rem;
+      justify-content: center;
+      background: #f472b6;
+      color: #fff;
+      border: 2.5px solid var(--ink-brown);
+      border-radius: 14px;
+    }
+
+    .big-check-btn:hover:not(:disabled) {
+      background: #ec4899;
+    }
+
+    /* 檢查結果與小八貓三步引導區 */
+    .feedback-box {
+      background: #fff;
+      border: 2.5px solid var(--ink-brown);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      box-shadow: var(--shadow-cute);
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.84rem;
+      font-weight: 800;
+      padding: 4px 12px;
+      border-radius: 999px;
+      border: 2px solid var(--ink-brown);
+      margin-bottom: 10px;
+    }
+
+    .status-wait {
+      background: #f3f4f6;
+    }
+
+    .status-ok {
+      background: #bbf7d0;
+      color: #14532d;
+    }
+
+    .status-retry {
+      background: #fecdd3;
+      color: #881337;
+    }
+
+    /* 面積對比刻度條 */
+    .meter-card {
+      background: #fffbeb;
+      border: 2px solid var(--ink-brown);
+      border-radius: 14px;
+      padding: 10px 12px;
+      margin: 10px 0 12px;
+    }
+
+    .meter-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.84rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .meter-track {
+      height: 12px;
+      background: #f3e8ff;
+      border: 2px solid var(--ink-brown);
+      border-radius: 999px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .meter-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #38bdf8, #f472b6);
+      width: 50%;
+      transition: width 0.3s ease;
+    }
+
+    /* 三步思考引導卡片 */
+    .guide-step {
+      border: 2px solid var(--ink-brown);
+      border-radius: 14px;
+      padding: 11px 13px;
+      margin-top: 10px;
+      background: var(--hachi-blue-light);
+    }
+
+    .guide-step.step-pink {
+      background: var(--chii-pink-light);
+    }
+
+    .guide-step.step-yellow {
+      background: var(--usagi-yellow-light);
+    }
+
+    .guide-step-title {
+      font-size: 0.88rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .guide-step p {
+      font-size: 0.85rem;
+      color: var(--ink-brown);
+      margin-bottom: 8px;
+    }
+
+    .inline-quiz {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.86rem;
+      font-weight: 800;
+    }
+
+    .mini-input {
+      width: 64px;
+      padding: 4px 6px;
+      border: 2px solid var(--ink-brown);
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 800;
+      text-align: center;
+      background: #fff;
+      color: var(--ink-brown);
+    }
+
+    .quiz-msg {
+      margin-top: 6px;
+      font-size: 0.82rem;
+      font-weight: 800;
+    }
+
+    .quiz-msg.ok {
+      color: #15803d;
+    }
+
+    .quiz-msg.err {
+      color: #be123c;
+    }
+
+    /* 答對時的討伐成功蓋章卡 */
+    .stamp-victory {
+      border: 2.5px dashed #16a34a;
+      background: #f0fdf4;
+      border-radius: 14px;
+      padding: 12px;
+      margin-top: 8px;
+      position: relative;
+    }
+
+    .formula-badge {
+      background: #fff;
+      border: 2px solid var(--ink-brown);
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-weight: 800;
+      font-size: 0.95rem;
+      text-align: center;
+      margin: 8px 0;
+    }
+
+    .obtuse-unlock-card {
+      margin-top: 12px;
+      background: linear-gradient(135deg, #fef9c3 0%, #e0f2fe 100%);
+      border: 2.5px solid var(--ink-brown);
+      border-radius: 14px;
+      padding: 12px;
+    }
+
+    .collection-bar {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 2px dashed var(--line-soft);
+      font-size: 0.82rem;
+    }
+
+    .record-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .record-tag {
+      background: #fdf2f8;
+      border: 1.5px solid var(--ink-brown);
+      border-radius: 999px;
+      padding: 2px 10px;
+      font-weight: 800;
+      font-size: 0.78rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="notebook-shell">
+    <!-- 頂部：吉伊卡哇與夥伴們標題列 -->
+    <header class="top-deco-bar">
+      <div class="title-group">
+        <div class="chii-avatars" aria-hidden="true">
+          <!-- 吉伊卡哇 SVG -->
+          <div class="avatar-badge" title="吉伊卡哇 Chiikawa">
+            <svg width="40" height="40" viewBox="0 0 64 64">
+              <circle cx="16" cy="16" r="9" fill="#fff" stroke="#4a3728" stroke-width="3.5"/>
+              <circle cx="48" cy="16" r="9" fill="#fff" stroke="#4a3728" stroke-width="3.5"/>
+              <circle cx="32" cy="35" r="22" fill="#fff" stroke="#4a3728" stroke-width="3.5"/>
+              <ellipse cx="19" cy="39" rx="4.5" ry="2.6" fill="#f9a8d4"/>
+              <ellipse cx="45" cy="39" rx="4.5" ry="2.6" fill="#f9a8d4"/>
+              <circle cx="24" cy="33" r="3" fill="#4a3728"/>
+              <circle cx="40" cy="33" r="3" fill="#4a3728"/>
+              <circle cx="23" cy="31.8" r="1" fill="#fff"/>
+              <circle cx="39" cy="31.8" r="1" fill="#fff"/>
+              <path d="M29 38 Q32 41 35 38" fill="none" stroke="#4a3728" stroke-width="2.6" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <!-- 小八貓 Hachiware SVG -->
+          <div class="avatar-badge" title="小八貓 Hachiware">
+            <svg width="40" height="40" viewBox="0 0 64 64">
+              <polygon points="12,24 16,8 27,18" fill="#7dd3fc" stroke="#4a3728" stroke-width="3.5" stroke-linejoin="round"/>
+              <polygon points="52,24 48,8 37,18" fill="#7dd3fc" stroke="#4a3728" stroke-width="3.5" stroke-linejoin="round"/>
+              <circle cx="32" cy="36" r="21" fill="#fff" stroke="#4a3728" stroke-width="3.5"/>
+              <path d="M13,27 Q24,25 32,16 Q40,25 51,27 A21,21 0 0,0 13,27 Z" fill="#7dd3fc"/>
+              <ellipse cx="19" cy="40" rx="4.2" ry="2.5" fill="#f9a8d4"/>
+              <ellipse cx="45" cy="40" rx="4.2" ry="2.5" fill="#f9a8d4"/>
+              <circle cx="24" cy="34" r="3" fill="#4a3728"/>
+              <circle cx="40" cy="34" r="3" fill="#4a3728"/>
+              <path d="M29 39 Q32 42 35 39" fill="none" stroke="#4a3728" stroke-width="2.6" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <!-- 兔兔 Usagi SVG -->
+          <div class="avatar-badge" title="兔兔 Usagi">
+            <svg width="40" height="40" viewBox="0 0 64 64">
+              <rect x="18" y="4" width="9" height="22" rx="4.5" fill="#fef08a" stroke="#4a3728" stroke-width="3.5"/>
+              <rect x="37" y="4" width="9" height="22" rx="4.5" fill="#fef08a" stroke="#4a3728" stroke-width="3.5"/>
+              <circle cx="32" cy="38" r="20" fill="#fef08a" stroke="#4a3728" stroke-width="3.5"/>
+              <ellipse cx="19" cy="41" rx="4" ry="2.4" fill="#fca5a5"/>
+              <ellipse cx="45" cy="41" rx="4" ry="2.4" fill="#fca5a5"/>
+              <circle cx="24" cy="35" r="3" fill="#4a3728"/>
+              <circle cx="40" cy="35" r="3" fill="#4a3728"/>
+              <path d="M28 40 Q32 44 36 40" fill="none" stroke="#4a3728" stroke-width="2.6" stroke-linecap="round"/>
+            </svg>
+          </div>
+        </div>
+        <div class="title-text">
+          <h1>
+            吉伊卡哇的三角形除草領地任務
+            <span class="grade-pill">小五數學・面積與方格紙</span>
+          </h1>
+          <p>先設定除草領地的目標面積，再在 1 cm² 方格紙上畫 3 條直線圍成三角形，最後找小八貓檢查答案！</p>
+        </div>
+      </div>
+
+      <div class="reward-counter">
+        <span>💮 除草合格印章：<strong id="stampCount">0</strong> 枚</span>
+        <span class="stamp-dot" id="rankBadge">見習除草員</span>
+      </div>
+    </header>
+
+    <!-- 第一步：設定目標面積 -->
+    <section class="mission-bar" aria-label="設定目標面積">
+      <div class="mission-left">
+        <span class="step-tag">步驟 1</span>
+        <label for="targetAreaInput" class="mission-label">輸入今天要圍出的三角形領地面積：</label>
+        <div class="area-input-box">
+          <input
+            type="number"
+            id="targetAreaInput"
+            min="0.5"
+            max="45"
+            step="0.5"
+            value="6"
+          />
+          <span class="area-unit">cm²</span>
+        </div>
+        <button type="button" class="btn btn-pink" id="applyTargetBtn">設定任務面積</button>
+      </div>
+
+      <div class="preset-group">
+        <span class="preset-label">委託板快速選題：</span>
+        <button type="button" class="preset-chip active" data-area="6">6 cm²</button>
+        <button type="button" class="preset-chip" data-area="8">8 cm²</button>
+        <button type="button" class="preset-chip" data-area="9">9 cm²</button>
+        <button type="button" class="preset-chip" data-area="12">12 cm²</button>
+        <button type="button" class="preset-chip" data-area="7.5">7.5 cm²</button>
+        <button type="button" class="preset-chip" id="randomMissionBtn">🎲 兔兔隨機委託</button>
+      </div>
+    </section>
+
+    <!-- 主工作區 -->
+    <main class="workspace">
+      <!-- 左欄：1 cm² 方格紙畫布 -->
+      <section class="canvas-card" aria-label="方格紙繪圖區">
+        <div class="canvas-header">
+          <div class="step-progress" id="drawStepBadge">
+            ✏️ 步驟 2：請在格線交點上畫出第 1 條直線（0 / 3 條直線）
+          </div>
+          <div class="unit-badge">
+            <span class="unit-square-icon"></span>
+            每個正方形面積 = 1 cm²（邊長 1 cm）
+          </div>
+        </div>
+
+        <!-- 鈍角三角形挑戰橫幅 -->
+        <div class="obtuse-banner" id="obtuseBanner">
+          <span>✨ <strong>兔兔的進階挑戰：</strong>底邊 AB 已保留！請將第 3 個頂點畫在<strong>底邊左右範圍之外</strong>（灰色延長線上方或下方），圍出「高在圖形外」的鈍角三角形！</span>
+          <button type="button" class="btn" id="exitObtuseBtn">結束進階挑戰</button>
+        </div>
+
+        <!-- 三邊皆為斜線或共線的溫和提醒 -->
+        <div class="gentle-banner" id="slantedWarningBanner">
+          <span id="slantedWarningText">
+            💡 小八貓提醒：這個三角形沒有水平或垂直的邊，在小五階段較難直接找出底和高。要不要擦掉重畫，先把第一條線畫在水平或垂直的格線上？
+          </span>
+          <button type="button" class="btn btn-pink" id="quickResetBaseBtn">擦掉重畫（先定底邊）</button>
+        </div>
+
+        <div class="canvas-container">
+          <canvas id="gridCanvas" width="640" height="460"></canvas>
+        </div>
+
+        <div class="canvas-toolbar">
+          <div class="tool-left">
+            <button type="button" class="btn" id="undoLineBtn" disabled>↩ 復原上一條線</button>
+            <button type="button" class="btn" id="clearCanvasBtn" disabled>🧹 全部擦掉重畫</button>
+          </div>
+          <div class="tool-right">
+            <button type="button" class="btn btn-blue" id="toggleGhostBtn" style="display:none;">
+              👻 隱藏上一次草稿
+            </button>
+            <button type="button" class="btn btn-yellow" id="toggleHeightGuideBtn">
+              📐 顯示底和高標示：開
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 右欄：吉伊卡哇夥伴檢查與引導面板 -->
+      <aside class="side-panel" aria-label="檢查答案與學習引導">
+        <!-- 角色對話與檢查按鈕 -->
+        <div class="check-hero-card">
+          <div class="character-stage">
+            <div class="char-figure" id="activeCharBox">
+              <!-- 動態切換吉伊卡哇/小八貓/兔兔表情 SVG -->
+            </div>
+            <div class="speech-bubble">
+              <span class="speech-speaker speaker-chii" id="speakerTag">吉伊卡哇 & 小八貓</span>
+              <div id="charSpeechText">
+                目標是圍出面積 <strong>6 cm²</strong> 的三角形領地！先沿著水平或垂直格線
