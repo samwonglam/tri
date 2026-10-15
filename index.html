@@ -1,875 +1,789 @@
-<!DOCTYPE html>
-<html lang="zh-HK">
+<!-- ... existing code ... -->
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>吉伊卡哇的三角形領地任務｜小五數學面積方格紙</title>
-  <style>
-    :root {
-      --bg-cream: #fff9fb;
-      --bg-dots: #fce7f3;
-      --paper: #ffffff;
-      --chii-pink: #f472b6;
-      --chii-pink-light: #fdf2f8;
-      --chii-pink-border: #fbcfe8;
-      --hachi-blue: #38bdf8;
-      --hachi-blue-dark: #0284c7;
-      --hachi-blue-light: #f0f9ff;
-      --hachi-blue-border: #bae6fd;
-      --usagi-yellow: #facc15;
-      --usagi-yellow-light: #fefce8;
-      --usagi-yellow-border: #fef08a;
-      --usagi-orange: #ca8a04;
-      --ink-brown: #4a3728;
-      --ink-muted: #7c6553;
-      --line-soft: #eadcd3;
-      --green-ok: #16a34a;
-      --green-light: #f0fdf4;
-      --green-border: #bbf7d0;
-      --red-height: #e11d48;
-      --shadow-cute: 0 5px 0 #e5d0c5;
-      --radius-lg: 22px;
-      --radius-md: 16px;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: "PingFang HK", "Microsoft JhengHei", "Noto Sans TC", sans-serif;
-      background-color: var(--bg-cream);
-      background-image:
-        radial-gradient(var(--bg-dots) 2.2px, transparent 2.2px),
-        radial-gradient(#e0f2fe 2.2px, var(--bg-cream) 2.2px);
-      background-size: 36px 36px;
-      background-position: 0 0, 18px 18px;
-      color: var(--ink-brown);
-      line-height: 1.55;
-      padding: 16px 12px 44px;
-    }
-
-    .notebook-shell {
-      max-width: 1160px;
-      margin: 0 auto;
-      background: var(--paper);
-      border: 3px solid var(--ink-brown);
-      border-radius: 26px;
-      box-shadow: 0 8px 0 #d9c3b6, 0 14px 32px rgba(74, 55, 40, 0.08);
-      overflow: hidden;
-      position: relative;
-    }
-
-    /* 頂部吉伊卡哇裝飾橫條 */
-    .top-deco-bar {
-      background: linear-gradient(90deg, #fce7f3 0%, #e0f2fe 50%, #fef9c3 100%);
-      border-bottom: 3px dashed var(--ink-brown);
-      padding: 12px 22px;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-    }
-
-    .title-group {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-
-    .chii-avatars {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .avatar-badge {
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      border: 2.5px solid var(--ink-brown);
-      background: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 3px 0 rgba(74, 55, 40, 0.16);
-      flex-shrink: 0;
-    }
-
-    .title-text h1 {
-      font-size: 1.38rem;
-      font-weight: 800;
-      color: var(--ink-brown);
-      letter-spacing: 0.02em;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .grade-pill {
-      font-size: 0.78rem;
-      background: var(--ink-brown);
-      color: #fff;
-      padding: 2px 10px;
-      border-radius: 999px;
-      font-weight: 700;
-    }
-
-    .title-text p {
-      font-size: 0.86rem;
-      color: var(--ink-muted);
-      font-weight: 600;
-    }
-
-    .reward-counter {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      background: #fff;
-      border: 2.5px solid var(--ink-brown);
-      border-radius: 999px;
-      padding: 6px 14px;
-      box-shadow: 0 3px 0 #e5d0c5;
-      font-size: 0.88rem;
-      font-weight: 800;
-    }
-
-    .stamp-dot {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--chii-pink-light);
-      color: #be185d;
-      border: 1.5px solid var(--chii-pink);
-      padding: 2px 9px;
-      border-radius: 999px;
-      font-size: 0.82rem;
-    }
-
-    /* 步驟一：任務輸入橫幅 */
-    .mission-bar {
-      margin: 16px 20px 0;
-      padding: 14px 18px;
-      background: var(--usagi-yellow-light);
-      border: 2.5px solid var(--ink-brown);
-      border-radius: var(--radius-md);
-      box-shadow: 0 4px 0 #e5d0c5;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-    }
-
-    .mission-left {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .step-tag {
-      background: var(--chii-pink);
-      color: #fff;
-      border: 2px solid var(--ink-brown);
-      font-weight: 800;
-      font-size: 0.82rem;
-      padding: 3px 10px;
-      border-radius: 999px;
-    }
-
-    .mission-label {
-      font-weight: 800;
-      font-size: 0.98rem;
-    }
-
-    .area-input-box {
-      display: inline-flex;
-      align-items: center;
-      background: #fff;
-      border: 2.5px solid var(--ink-brown);
-      border-radius: 12px;
-      padding: 3px 10px;
-      gap: 6px;
-    }
-
-    .area-input-box input {
-      width: 72px;
-      border: none;
-      outline: none;
-      font-size: 1.15rem;
-      font-weight: 800;
-      color: #be185d;
-      text-align: center;
-      font-family: inherit;
-      background: transparent;
-    }
-
-    .area-unit {
-      font-weight: 800;
-      font-size: 0.92rem;
-      color: var(--ink-muted);
-    }
-
-    .btn {
-      appearance: none;
-      border: 2.5px solid var(--ink-brown);
-      background: #fff;
-      color: var(--ink-brown);
-      font-family: inherit;
-      font-size: 0.88rem;
-      font-weight: 800;
-      padding: 7px 14px;
-      border-radius: 12px;
-      cursor: pointer;
-      box-shadow: 0 3px 0 var(--ink-brown);
-      transition: transform 0.08s ease, box-shadow 0.08s ease, background 0.15s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .btn:hover:not(:disabled) {
-      background: #fffdf5;
-      transform: translateY(-1px);
-      box-shadow: 0 4px 0 var(--ink-brown);
-    }
-
-    .btn:active:not(:disabled) {
-      transform: translateY(2px);
-      box-shadow: 0 1px 0 var(--ink-brown);
-    }
-
-    .btn:disabled {
-      opacity: 0.45;
-      cursor: not-allowed;
-      box-shadow: none;
-    }
-
-    .btn-pink {
-      background: #fbcfe8;
-      color: var(--ink-brown);
-    }
-
-    .btn-pink:hover:not(:disabled) {
-      background: #f9a8d4;
-    }
-
-    .btn-blue {
-      background: #bae6fd;
-      color: var(--ink-brown);
-    }
-
-    .btn-blue:hover:not(:disabled) {
-      background: #7dd3fc;
-    }
-
-    .btn-yellow {
-      background: #fef08a;
-      color: var(--ink-brown);
-    }
-
-    .preset-group {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-
-    .preset-label {
-      font-size: 0.82rem;
-      font-weight: 700;
-      color: var(--ink-muted);
-    }
-
-    .preset-chip {
-      border: 2px solid var(--ink-brown);
-      background: #fff;
-      color: var(--ink-brown);
-      border-radius: 999px;
-      padding: 4px 11px;
-      font-size: 0.82rem;
-      font-weight: 800;
-      cursor: pointer;
-      transition: all 0.12s;
-    }
-
-    .preset-chip:hover {
-      background: var(--chii-pink-light);
-    }
-
-    .preset-chip.active {
-      background: var(--hachi-blue);
-      color: #fff;
-    }
-
-    /* 主工作區雙欄佈局 */
-    .workspace {
-      display: grid;
-      grid-template-columns: 1.28fr 1fr;
-      gap: 20px;
-      padding: 18px 20px 24px;
-      align-items: start;
-    }
-
-    @media (max-width: 940px) {
-      .workspace {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    /* 左側方格紙畫布卡片 */
-    .canvas-card {
-      background: #fff;
-      border: 2.5px solid var(--ink-brown);
-      border-radius: var(--radius-lg);
-      padding: 14px;
-      box-shadow: var(--shadow-cute);
-    }
-
-    .canvas-header {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      margin-bottom: 10px;
-    }
-
-    .step-progress {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--hachi-blue-light);
-      border: 2px solid var(--ink-brown);
-      border-radius: 999px;
-      padding: 4px 12px;
-      font-size: 0.85rem;
-      font-weight: 800;
-    }
-
-    .unit-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.82rem;
-      font-weight: 800;
-      background: #fef9c3;
-      border: 2px solid var(--ink-brown);
-      padding: 4px 10px;
-      border-radius: 999px;
-    }
-
-    .unit-square-icon {
-      width: 14px;
-      height: 14px;
-      background: rgba(56, 189, 248, 0.35);
-      border: 2px solid #0284c7;
-      display: inline-block;
-    }
-
-    /* 溫和提醒橫幅 */
-    .gentle-banner {
-      display: none;
-      margin-bottom: 10px;
-      padding: 10px 14px;
-      background: #fff1f2;
-      border: 2.5px solid #f43f5e;
-      border-radius: 14px;
-      font-size: 0.86rem;
-      font-weight: 700;
-      color: #881337;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-    }
-
-    .gentle-banner.show {
-      display: flex;
-      flex-wrap: wrap;
-    }
-
-    .obtuse-banner {
-      display: none;
-      margin-bottom: 10px;
-      padding: 10px 14px;
-      background: #f0f9ff;
-      border: 2.5px solid #0284c7;
-      border-radius: 14px;
-      font-size: 0.86rem;
-      font-weight: 700;
-      color: #0c4a6e;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-    }
-
-    .obtuse-banner.show {
-      display: flex;
-      flex-wrap: wrap;
-    }
-
-    .canvas-container {
-      position: relative;
-      width: 100%;
-      background: #fffdf9;
-      border: 2.5px solid var(--ink-brown);
-      border-radius: 16px;
-      overflow: hidden;
-      touch-action: none;
-      user-select: none;
-    }
-
-    canvas {
-      display: block;
-      width: 100%;
-      height: auto;
-      cursor: crosshair;
-    }
-
-    .canvas-toolbar {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      margin-top: 12px;
-    }
-
-    .tool-left, .tool-right {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 8px;
-    }
-
-    /* 右側：吉伊卡哇夥伴檢查與引導面板 */
-    .side-panel {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    .check-hero-card {
-      background: linear-gradient(180deg, #fdf2f8 0%, #ffffff 100%);
-      border: 2.5px solid var(--ink-brown);
-      border-radius: var(--radius-lg);
-      padding: 16px;
-      box-shadow: var(--shadow-cute);
-    }
-
-    .character-stage {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      margin-bottom: 12px;
-    }
-
-    .char-figure {
-      width: 74px;
-      height: 74px;
-      background: #fff;
-      border: 2.5px solid var(--ink-brown);
-      border-radius: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      box-shadow: 0 3px 0 #e5d0c5;
-    }
-
-    .speech-bubble {
-      position: relative;
-      background: #fff;
-      border: 2.5px solid var(--ink-brown);
-      border-radius: 16px;
-      padding: 10px 14px;
-      flex: 1;
-      font-size: 0.9rem;
-      font-weight: 700;
-      box-shadow: 0 3px 0 #f3e5dc;
-    }
-
-    .speech-speaker {
-      display: inline-block;
-      font-size: 0.76rem;
-      font-weight: 800;
-      padding: 1px 8px;
-      border-radius: 999px;
-      margin-bottom: 4px;
-      border: 1.5px solid var(--ink-brown);
-    }
-
-    .speaker-chii {
-      background: #fbcfe8;
-    }
-
-    .speaker-hachi {
-      background: #bae6fd;
-    }
-
-    .speaker-usagi {
-      background: #fef08a;
-    }
-
-    .big-check-btn {
-      width: 100%;
-      padding: 12px 16px;
-      font-size: 1.04rem;
-      justify-content: center;
-      background: #f472b6;
-      color: #fff;
-      border: 2.5px solid var(--ink-brown);
-      border-radius: 14px;
-    }
-
-    .big-check-btn:hover:not(:disabled) {
-      background: #ec4899;
-    }
-
-    /* 檢查結果與小八貓三步引導區 */
-    .feedback-box {
-      background: #fff;
-      border: 2.5px solid var(--ink-brown);
-      border-radius: var(--radius-lg);
-      padding: 16px;
-      box-shadow: var(--shadow-cute);
-    }
-
-    .status-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.84rem;
-      font-weight: 800;
-      padding: 4px 12px;
-      border-radius: 999px;
-      border: 2px solid var(--ink-brown);
-      margin-bottom: 10px;
-    }
-
-    .status-wait {
-      background: #f3f4f6;
-    }
-
-    .status-ok {
-      background: #bbf7d0;
-      color: #14532d;
-    }
-
-    .status-retry {
-      background: #fecdd3;
-      color: #881337;
-    }
-
-    /* 面積對比刻度條 */
-    .meter-card {
-      background: #fffbeb;
-      border: 2px solid var(--ink-brown);
-      border-radius: 14px;
-      padding: 10px 12px;
-      margin: 10px 0 12px;
-    }
-
-    .meter-row {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.84rem;
-      font-weight: 800;
-      margin-bottom: 6px;
-    }
-
-    .meter-track {
-      height: 12px;
-      background: #f3e8ff;
-      border: 2px solid var(--ink-brown);
-      border-radius: 999px;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .meter-fill {
-      height: 100%;
-      background: linear-gradient(90deg, #38bdf8, #f472b6);
-      width: 50%;
-      transition: width 0.3s ease;
-    }
-
-    /* 三步思考引導卡片 */
-    .guide-step {
-      border: 2px solid var(--ink-brown);
-      border-radius: 14px;
-      padding: 11px 13px;
-      margin-top: 10px;
-      background: var(--hachi-blue-light);
-    }
-
-    .guide-step.step-pink {
-      background: var(--chii-pink-light);
-    }
-
-    .guide-step.step-yellow {
-      background: var(--usagi-yellow-light);
-    }
-
-    .guide-step-title {
-      font-size: 0.88rem;
-      font-weight: 800;
-      margin-bottom: 6px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .guide-step p {
-      font-size: 0.85rem;
-      color: var(--ink-brown);
-      margin-bottom: 8px;
-    }
-
-    .inline-quiz {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.86rem;
-      font-weight: 800;
-    }
-
-    .mini-input {
-      width: 64px;
-      padding: 4px 6px;
-      border: 2px solid var(--ink-brown);
-      border-radius: 8px;
-      font-size: 0.9rem;
-      font-weight: 800;
-      text-align: center;
-      background: #fff;
-      color: var(--ink-brown);
-    }
-
-    .quiz-msg {
-      margin-top: 6px;
-      font-size: 0.82rem;
-      font-weight: 800;
-    }
-
-    .quiz-msg.ok {
-      color: #15803d;
-    }
-
-    .quiz-msg.err {
-      color: #be123c;
-    }
-
-    /* 答對時的討伐成功蓋章卡 */
-    .stamp-victory {
-      border: 2.5px dashed #16a34a;
-      background: #f0fdf4;
-      border-radius: 14px;
-      padding: 12px;
-      margin-top: 8px;
-      position: relative;
-    }
-
-    .formula-badge {
-      background: #fff;
-      border: 2px solid var(--ink-brown);
-      border-radius: 10px;
-      padding: 8px 12px;
-      font-weight: 800;
-      font-size: 0.95rem;
-      text-align: center;
-      margin: 8px 0;
-    }
-
-    .obtuse-unlock-card {
-      margin-top: 12px;
-      background: linear-gradient(135deg, #fef9c3 0%, #e0f2fe 100%);
-      border: 2.5px solid var(--ink-brown);
-      border-radius: 14px;
-      padding: 12px;
-    }
-
-    .collection-bar {
-      margin-top: 10px;
-      padding-top: 10px;
-      border-top: 2px dashed var(--line-soft);
-      font-size: 0.82rem;
-    }
-
-    .record-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 6px;
-    }
-
-    .record-tag {
-      background: #fdf2f8;
-      border: 1.5px solid var(--ink-brown);
-      border-radius: 999px;
-      padding: 2px 10px;
-      font-weight: 800;
-      font-size: 0.78rem;
-    }
-  </style>
-</head>
-<body>
-  <div class="notebook-shell">
-    <!-- 頂部：吉伊卡哇與夥伴們標題列 -->
-    <header class="top-deco-bar">
-      <div class="title-group">
-        <div class="chii-avatars" aria-hidden="true">
-          <!-- 吉伊卡哇 SVG -->
-          <div class="avatar-badge" title="吉伊卡哇 Chiikawa">
-            <svg width="40" height="40" viewBox="0 0 64 64">
-              <circle cx="16" cy="16" r="9" fill="#fff" stroke="#4a3728" stroke-width="3.5"/>
-              <circle cx="48" cy="16" r="9" fill="#fff" stroke="#4a3728" stroke-width="3.5"/>
-              <circle cx="32" cy="35" r="22" fill="#fff" stroke="#4a3728" stroke-width="3.5"/>
-              <ellipse cx="19" cy="39" rx="4.5" ry="2.6" fill="#f9a8d4"/>
-              <ellipse cx="45" cy="39" rx="4.5" ry="2.6" fill="#f9a8d4"/>
-              <circle cx="24" cy="33" r="3" fill="#4a3728"/>
-              <circle cx="40" cy="33" r="3" fill="#4a3728"/>
-              <circle cx="23" cy="31.8" r="1" fill="#fff"/>
-              <circle cx="39" cy="31.8" r="1" fill="#fff"/>
-              <path d="M29 38 Q32 41 35 38" fill="none" stroke="#4a3728" stroke-width="2.6" stroke-linecap="round"/>
-            </svg>
-          </div>
-          <!-- 小八貓 Hachiware SVG -->
-          <div class="avatar-badge" title="小八貓 Hachiware">
-            <svg width="40" height="40" viewBox="0 0 64 64">
-              <polygon points="12,24 16,8 27,18" fill="#7dd3fc" stroke="#4a3728" stroke-width="3.5" stroke-linejoin="round"/>
-              <polygon points="52,24 48,8 37,18" fill="#7dd3fc" stroke="#4a3728" stroke-width="3.5" stroke-linejoin="round"/>
-              <circle cx="32" cy="36" r="21" fill="#fff" stroke="#4a3728" stroke-width="3.5"/>
-              <path d="M13,27 Q24,25 32,16 Q40,25 51,27 A21,21 0 0,0 13,27 Z" fill="#7dd3fc"/>
-              <ellipse cx="19" cy="40" rx="4.2" ry="2.5" fill="#f9a8d4"/>
-              <ellipse cx="45" cy="40" rx="4.2" ry="2.5" fill="#f9a8d4"/>
-              <circle cx="24" cy="34" r="3" fill="#4a3728"/>
-              <circle cx="40" cy="34" r="3" fill="#4a3728"/>
-              <path d="M29 39 Q32 42 35 39" fill="none" stroke="#4a3728" stroke-width="2.6" stroke-linecap="round"/>
-            </svg>
-          </div>
-          <!-- 兔兔 Usagi SVG -->
-          <div class="avatar-badge" title="兔兔 Usagi">
-            <svg width="40" height="40" viewBox="0 0 64 64">
-              <rect x="18" y="4" width="9" height="22" rx="4.5" fill="#fef08a" stroke="#4a3728" stroke-width="3.5"/>
-              <rect x="37" y="4" width="9" height="22" rx="4.5" fill="#fef08a" stroke="#4a3728" stroke-width="3.5"/>
-              <circle cx="32" cy="38" r="20" fill="#fef08a" stroke="#4a3728" stroke-width="3.5"/>
-              <ellipse cx="19" cy="41" rx="4" ry="2.4" fill="#fca5a5"/>
-              <ellipse cx="45" cy="41" rx="4" ry="2.4" fill="#fca5a5"/>
-              <circle cx="24" cy="35" r="3" fill="#4a3728"/>
-              <circle cx="40" cy="35" r="3" fill="#4a3728"/>
-              <path d="M28 40 Q32 44 36 40" fill="none" stroke="#4a3728" stroke-width="2.6" stroke-linecap="round"/>
-            </svg>
-          </div>
-        </div>
-        <div class="title-text">
-          <h1>
-            吉伊卡哇的三角形除草領地任務
-            <span class="grade-pill">小五數學・面積與方格紙</span>
-          </h1>
-          <p>先設定除草領地的目標面積，再在 1 cm² 方格紙上畫 3 條直線圍成三角形，最後找小八貓檢查答案！</p>
-        </div>
-      </div>
-
-      <div class="reward-counter">
-        <span>💮 除草合格印章：<strong id="stampCount">0</strong> 枚</span>
-        <span class="stamp-dot" id="rankBadge">見習除草員</span>
-      </div>
-    </header>
-
-    <!-- 第一步：設定目標面積 -->
-    <section class="mission-bar" aria-label="設定目標面積">
-      <div class="mission-left">
-        <span class="step-tag">步驟 1</span>
-        <label for="targetAreaInput" class="mission-label">輸入今天要圍出的三角形領地面積：</label>
-        <div class="area-input-box">
-          <input
-            type="number"
-            id="targetAreaInput"
-            min="0.5"
-            max="45"
-            step="0.5"
-            value="6"
-          />
-          <span class="area-unit">cm²</span>
-        </div>
-        <button type="button" class="btn btn-pink" id="applyTargetBtn">設定任務面積</button>
-      </div>
-
-      <div class="preset-group">
-        <span class="preset-label">委託板快速選題：</span>
-        <button type="button" class="preset-chip active" data-area="6">6 cm²</button>
-        <button type="button" class="preset-chip" data-area="8">8 cm²</button>
-        <button type="button" class="preset-chip" data-area="9">9 cm²</button>
-        <button type="button" class="preset-chip" data-area="12">12 cm²</button>
-        <button type="button" class="preset-chip" data-area="7.5">7.5 cm²</button>
-        <button type="button" class="preset-chip" id="randomMissionBtn">🎲 兔兔隨機委託</button>
-      </div>
-    </section>
-
-    <!-- 主工作區 -->
-    <main class="workspace">
-      <!-- 左欄：1 cm² 方格紙畫布 -->
-      <section class="canvas-card" aria-label="方格紙繪圖區">
-        <div class="canvas-header">
-          <div class="step-progress" id="drawStepBadge">
-            ✏️ 步驟 2：請在格線交點上畫出第 1 條直線（0 / 3 條直線）
-          </div>
-          <div class="unit-badge">
-            <span class="unit-square-icon"></span>
-            每個正方形面積 = 1 cm²（邊長 1 cm）
-          </div>
-        </div>
-
-        <!-- 鈍角三角形挑戰橫幅 -->
-        <div class="obtuse-banner" id="obtuseBanner">
-          <span>✨ <strong>兔兔的進階挑戰：</strong>底邊 AB 已保留！請將第 3 個頂點畫在<strong>底邊左右範圍之外</strong>（灰色延長線上方或下方），圍出「高在圖形外」的鈍角三角形！</span>
-          <button type="button" class="btn" id="exitObtuseBtn">結束進階挑戰</button>
-        </div>
-
-        <!-- 三邊皆為斜線或共線的溫和提醒 -->
-        <div class="gentle-banner" id="slantedWarningBanner">
-          <span id="slantedWarningText">
-            💡 小八貓提醒：這個三角形沒有水平或垂直的邊，在小五階段較難直接找出底和高。要不要擦掉重畫，先把第一條線畫在水平或垂直的格線上？
-          </span>
-          <button type="button" class="btn btn-pink" id="quickResetBaseBtn">擦掉重畫（先定底邊）</button>
-        </div>
-
-        <div class="canvas-container">
-          <canvas id="gridCanvas" width="640" height="460"></canvas>
-        </div>
-
-        <div class="canvas-toolbar">
-          <div class="tool-left">
-            <button type="button" class="btn" id="undoLineBtn" disabled>↩ 復原上一條線</button>
-            <button type="button" class="btn" id="clearCanvasBtn" disabled>🧹 全部擦掉重畫</button>
-          </div>
-          <div class="tool-right">
-            <button type="button" class="btn btn-blue" id="toggleGhostBtn" style="display:none;">
-              👻 隱藏上一次草稿
-            </button>
-            <button type="button" class="btn btn-yellow" id="toggleHeightGuideBtn">
-              📐 顯示底和高標示：開
-            </button>
-          </div>
-        </div>
-      </section>
-
-      <!-- 右欄：吉伊卡哇夥伴檢查與引導面板 -->
-      <aside class="side-panel" aria-label="檢查答案與學習引導">
-        <!-- 角色對話與檢查按鈕 -->
-        <div class="check-hero-card">
-          <div class="character-stage">
-            <div class="char-figure" id="activeCharBox">
-              <!-- 動態切換吉伊卡哇/小八貓/兔兔表情 SVG -->
-            </div>
-            <div class="speech-bubble">
-              <span class="speech-speaker speaker-chii" id="speakerTag">吉伊卡哇 & 小八貓</span>
-              <div id="charSpeechText">
-                目標是圍出面積 <strong>6 cm²</strong> 的三角形領地！先沿著水平或垂直格線
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>五上數學：三角形面積方格紙繪圖練習</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Traditional Chinese & Rounded Numerals -->
+<!-- ... existing code ... -->
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 text-xs font-bold bg-amber-200 text-slate-900 border border-slate-800 rounded-md">五年級上學期・幾何與面積</span>
+                        </div>
+                        <h1 class="text-xl sm:text-2xl font-round font-black text-slate-900 tracking-tight mt-0.5">
+                            五上數學：三角形面積方格紙繪圖練習
+                        </h1>
+                    </div>
+                </div>
+<!-- ... existing code ... -->
+                            <button id="eraserBtn" disabled class="stationery-btn bg-rose-50 hover:bg-rose-100 text-rose-950 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-1.5">
+                                <!-- Eraser SVG -->
+                                <svg class="w-4 h-4 text-rose-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="m7 21-4.3-4.3c-1-1-1-2.5 0-3.4l9.6-9.6c1-1 2.5-1 3.4 0l5.6 5.6c1 1 1 2.5 0 3.4L13 21"/>
+                                    <path d="M22 21H7"/>
+                                    <path d="m5 11 9 9"/>
+                                </svg>
+                                <span>全部擦掉重畫</span>
+                            </button>
+
+                            <button id="draftToggleBtn" disabled class="stationery-btn bg-slate-100 hover:bg-slate-200 text-slate-800 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-1.5" title="顯示或隱藏上一次畫的三角形草稿殘影">
+                                <!-- Ghost Draft Overlay SVG -->
+                                <svg class="w-4 h-4 text-slate-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polygon points="12 3 3 20 21 20" stroke-dasharray="3 3"/>
+                                </svg>
+                                <span id="draftToggleBtnText">顯示上一次的草稿</span>
+                            </button>
+                        </div>
+
+                        <!-- Right: Base/Height Indicator & Parallelogram Tool -->
+<!-- ... existing code ... -->
+                    <!--Memo Header -->
+                    <div class="flex items-start justify-between gap-2 mb-3">
+                        <div>
+                            <span class="text-xs font-bold uppercase tracking-wider text-amber-900 bg-amber-300/70 px-2 py-0.5 rounded border border-amber-800/30">
+                                步驟三：檢查與思考引導
+                            </span>
+                            <h2 id="memoTitle" class="text-base sm:text-lg font-round font-black text-slate-900 mt-1.5">
+                                畫好 3 條直線後，按「檢查答案」
+                            </h2>
+                            <p id="memoSubtitle" class="text-xs text-slate-600 font-medium mt-0.5">
+                                系統會先比較面積大小，再一步步引導你思考
+                            </p>
+                        </div>
+
+                        <!-- Red Ink Verification Stamp (Hidden until Correct) -->
+                        <div id="stampContainer" class="hidden shrink-0">
+                            <div class="ink-stamp border-[3px] border-red-700 text-red-700 rounded-xl px-2.5 py-1 text-center font-round font-black leading-tight bg-red-50/90 shadow-sm">
+                                <div id="stampTopLabel" class="text-[10px] tracking-widest border-b border-red-700/50 pb-0.5">五上數學</div>
+                                <div id="stampMainLabel" class="text-sm sm:text-base tracking-wider py-0.5">面積正確</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dynamic Memo Body -->
+<!-- ... existing code ... -->
+                // Feature 1: Obtuse Triangle (External Height / 高在圖形外) Challenge Mode
+                obtuseChallenge: {
+                    active: false,
+                    keepBase: true,       // true = locks original base AB; false = draw all 3 lines from scratch
+                    completed: false,
+                    lockedBaseP1: null,
+                    lockedBaseP2: null,
+                    baseType: null,       // 'horizontal' | 'vertical'
+                    baseLength: 0,
+                    targetHeight: 0,
+                    refPoints: null       // Original correct triangle vertices for comparison
+                },
+
+                // Socratic Scaffolding State (Never reveals answers!)
+<!-- ... existing code ... -->
+            const feedbackMemoPad = document.getElementById('feedbackMemoPad');
+            const memoTitle = document.getElementById('memoTitle');
+            const memoSubtitle = document.getElementById('memoSubtitle');
+            const memoContentArea = document.getElementById('memoContentArea');
+            const stampContainer = document.getElementById('stampContainer');
+            const stampTopLabel = document.getElementById('stampTopLabel');
+            const stampMainLabel = document.getElementById('stampMainLabel');
+
+            const targetDisplayBadges = document.querySelectorAll('.target-display-badge');
+            const collectedCountBadge = document.getElementById('collectedCountBadge');
+            const stampGridContainer = document.getElementById('stampGridContainer');
+<!-- ... existing code ... -->
+            function updateDraftButtonUI() {
+                if (!state.lastDraftTriangle) {
+                    draftToggleBtn.disabled = true;
+                    draftToggleBtn.className = 'stationery-btn bg-slate-100 text-slate-400 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-1.5';
+                    draftToggleBtnText.textContent = '顯示上一次的草稿';
+                    return;
+                }
+                draftToggleBtn.disabled = false;
+                if (state.showLastDraft) {
+                    draftToggleBtn.className = 'stationery-btn bg-amber-100 hover:bg-amber-200 text-slate-900 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-1.5';
+                    draftToggleBtnText.textContent = '顯示上一次的草稿 ✓';
+                } else {
+                    draftToggleBtn.className = 'stationery-btn bg-white hover:bg-slate-100 text-slate-700 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-1.5';
+                    draftToggleBtnText.textContent = '顯示上一次的草稿';
+                }
+            }
+
+            /**
+             * Synchronizes derived vertices from drawn segments and updates toolbar button states.
+             */
+            function syncVerticesFromSegments() {
+                const segs = state.segments;
+                if (segs.length === 0) {
+                    state.points = [];
+                } else if (segs.length === 1) {
+                    state.points = [
+                        { x: segs[0].p1.x, y: segs[0].p1.y, label: 'A' },
+                        { x: segs[0].p2.x, y: segs[0].p2.y, label: 'B' }
+                    ];
+                } else {
+                    const A = segs[0].p1;
+                    const B = segs[0].p2;
+                    const C = (!samePt(segs[1].p2, A) && !samePt(segs[1].p2, B)) ? segs[1].p2 : segs[1].p1;
+                    state.points = [
+                        { x: A.x, y: A.y, label: 'A' },
+                        { x: B.x, y: B.y, label: 'B' },
+                        { x: C.x, y: C.y, label: 'C' }
+                    ];
+                }
+
+                // In obtuse challenge mode with keepBase=true, segment 1 (base AB) is locked
+                const minSegsForUndo = (state.obtuseChallenge.active && state.obtuseChallenge.keepBase) ? 1 : 0;
+                const canUndo = segs.length > minSegsForUndo || (!(state.obtuseChallenge.active && state.obtuseChallenge.keepBase) && state.activeStartPoint !== null);
+                const hasAny = segs.length > 0 || state.activeStartPoint !== null;
+                undoLineBtn.disabled = !canUndo;
+                eraserBtn.disabled = !hasAny;
+
+                // Check for 3 completed segments that have NO horizontal/vertical edge or are collinear
+                updateSlantedAndCollinearWarning();
+
+                if (segs.length < 3 && state.showTwinParallelogram) {
+                    state.showTwinParallelogram = false;
+                    parallelogramBanner.classList.add('hidden');
+                    twinBtnText.textContent = '拼成平行四邊形 (理解 ÷ 2)';
+                    twinToggleBtn.className = 'stationery-btn bg-amber-100 hover:bg-amber-200 text-amber-950 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-1.5';
+                }
+            }
+
+            /**
+             * Feature 2: Gentle reminder when student draws 3 segments that have NO horizontal/vertical side
+             * or when 3 vertices are collinear. Also updates the right-hand guide panel immediately.
+             */
+            function updateSlantedAndCollinearWarning() {
+                if (state.segments.length < 3 || state.points.length < 3) {
+                    slantedWarningBanner.classList.add('hidden');
+                    return;
+                }
+                const info = analyzeStudentTriangle(state.points);
+                if (info.type === 'collinear') {
+                    slantedWarningText.textContent = '這三條直線排在同一條直線上（三點共線），無法圍成三角形。要不要擦掉重畫，先把第一條線畫在水平或垂直格線上？';
+                    slantedWarningBanner.classList.remove('hidden');
+                    renderCollinearReminderCard();
+                } else if (info.type === 'slanted') {
+                    slantedWarningText.textContent = '這個三角形沒有水平或垂直的邊，在小五階段較難直接找出底和高。要不要擦掉重畫，先把第一條線畫在水平或垂直的格線上？';
+                    slantedWarningBanner.classList.remove('hidden');
+                    renderSlantedReminderCard(info);
+                } else {
+                    slantedWarningBanner.classList.add('hidden');
+                }
+            }
+
+            /**
+             * Renders the gentle reminder card in the right-hand panel when all 3 sides are slanted.
+             */
+            function renderSlantedReminderCard(info) {
+                stampContainer.classList.add('hidden');
+                feedbackMemoPad.className = 'sticky-note bg-[#fef3c7] rounded-2xl p-4 sm:p-5 transition-all';
+                memoTitle.textContent = '溫和提醒：沒有水平或垂直的邊';
+                memoSubtitle.textContent = '建議先把第一條線畫在水平或垂直的格線上作為「底」';
+                memoContentArea.innerHTML = `
+                    <div class="bg-white/95 border-2 border-amber-800 rounded-xl p-3.5 space-y-2.5 text-xs sm:text-sm text-slate-800 leading-relaxed">
+                        <p class="font-bold text-amber-950">
+                            這個三角形沒有水平或垂直的邊，在小五階段較難直接找出底和高。要不要擦掉重畫，先把第一條線畫在水平或垂直的格線上？
+                        </p>
+                        <p class="text-xs text-slate-600">
+                            按下方的按鈕後，系統會將你剛才畫的三角形保留為淺灰色的「<strong>上一次的草稿</strong>」，方便你對照位置重新畫出水平或垂直的底邊。
+                        </p>
+                        <button id="panelSlantedRedrawBtn" class="stationery-btn w-full bg-amber-300 hover:bg-amber-400 text-slate-900 font-black py-2 px-3 rounded-xl text-xs sm:text-sm flex items-center justify-center gap-1.5 cursor-pointer">
+                            <span>擦掉重畫（先畫水平或垂直底邊）</span>
+                        </button>
+                    </div>
+                `;
+                const btn = document.getElementById('panelSlantedRedrawBtn');
+                if (btn) {
+                    btn.addEventListener('click', () => triggerEraseAllWithDraft());
+                }
+            }
+
+            /**
+             * Renders the gentle reminder card in the right-hand panel when 3 vertices are collinear.
+             */
+            function renderCollinearReminderCard() {
+                stampContainer.classList.add('hidden');
+                feedbackMemoPad.className = 'sticky-note bg-[#ffe4e6] rounded-2xl p-4 sm:p-5 transition-all';
+                memoTitle.textContent = '溫和提醒：三條直線排在同一條直線上';
+                memoSubtitle.textContent = '三個頂點共線（面積為 0 cm²），尚未圍成三角形';
+                memoContentArea.innerHTML = `
+                    <div class="bg-white/95 border-2 border-rose-800 rounded-xl p-3.5 space-y-2.5 text-xs sm:text-sm text-slate-800 leading-relaxed">
+                        <p class="font-bold text-rose-950">
+                            這三條直線排在同一條直線上，沒有圍出內部空間，因此無法形成三角形。
+                        </p>
+                        <p class="text-xs text-slate-600">
+                            請先把第一條線畫在<strong>水平或垂直的格線</strong>上作為「底」，再將第三個頂點選在底邊以外的格點上。
+                        </p>
+                        <button id="panelCollinearRedrawBtn" class="stationery-btn w-full bg-amber-300 hover:bg-amber-400 text-slate-900 font-black py-2 px-3 rounded-xl text-xs sm:text-sm flex items-center justify-center gap-1.5 cursor-pointer">
+                            <span>擦掉重畫（先畫水平或垂直底邊）</span>
+                        </button>
+                    </div>
+                `;
+                const btn = document.getElementById('panelCollinearRedrawBtn');
+                if (btn) {
+                    btn.addEventListener('click', () => triggerEraseAllWithDraft());
+                }
+            }
+<!-- ... existing code ... -->
+            /**
+             * Feature 3: Renders `state.lastDraftTriangle` as a subtle grey dashed ghost triangle
+             * with vertex labels A', B', C' and a clear pill label "上一次的草稿".
+             */
+            function drawLastDraftGhost() {
+                const draft = state.lastDraftTriangle;
+                if (!draft || !draft.points || draft.points.length < 3) return;
+
+                // Avoid drawing directly on top if the current completed triangle is identical to the draft
+                if (state.points.length === 3 &&
+                    samePt(state.points[0], draft.points[0]) &&
+                    samePt(state.points[1], draft.points[1]) &&
+                    samePt(state.points[2], draft.points[2])) {
+                    return;
+                }
+
+                const pixPts = draft.points.map(p => gridToPix(p.x, p.y));
+
+                ctx.save();
+                ctx.beginPath();
+                ctx.moveTo(pixPts[0].x, pixPts[0].y);
+                ctx.lineTo(pixPts[1].x, pixPts[1].y);
+                ctx.lineTo(pixPts[2].x, pixPts[2].y);
+                ctx.closePath();
+
+                ctx.fillStyle = 'rgba(148, 163, 184, 0.07)';
+                ctx.fill();
+
+                ctx.setLineDash([5, 5]);
+                ctx.lineWidth = 2;
+                ctx.strokeStyle = '#94a3b8';
+                ctx.stroke();
+                ctx.setLineDash([]);
+
+                // Centroid of ghost draft for offsetting A', B', C' labels
+                const cx = (pixPts[0].x + pixPts[1].x + pixPts[2].x) / 3;
+                const cy = (pixPts[0].y + pixPts[1].y + pixPts[2].y) / 3;
+
+                // Small ghost vertex dots and subtle A', B', C' labels
+                const primeLabels = ["A'", "B'", "C'"];
+                pixPts.forEach((pt, idx) => {
+                    ctx.beginPath();
+                    ctx.arc(pt.x, pt.y, 4, 0, Math.PI * 2);
+                    ctx.fillStyle = '#94a3b8';
+                    ctx.fill();
+
+                    let dx = pt.x - cx;
+                    let dy = pt.y - cy;
+                    const dist = Math.hypot(dx, dy) || 1;
+                    const lx = pt.x + (dx / dist) * 14;
+                    const ly = pt.y + (dy / dist) * 14;
+
+                    ctx.font = '700 11px "Quicksand", sans-serif';
+                    ctx.fillStyle = '#64748b';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(primeLabels[idx] || "P'", lx, ly);
+                });
+
+                // Pill label on the canvas: "上一次的草稿"
+                drawCanvasTag(cx, cy, '上一次的草稿', '#475569', 'rgba(241, 245, 249, 0.94)', '#94a3b8');
+                ctx.restore();
+            }
+
+            /**
+             * Feature 1: When in Obtuse Triangle Challenge mode, draws the infinite extension line of base AB
+             * and subtly labels the "底邊範圍之外" regions, plus live external altitude preview.
+             */
+            function drawObtuseChallengeGuide() {
+                // Determine base p1, p2 either from lockedBase or from the student's 1st drawn horizontal/vertical segment
+                let p1 = state.obtuseChallenge.lockedBaseP1;
+                let p2 = state.obtuseChallenge.lockedBaseP2;
+                let baseType = state.obtuseChallenge.baseType;
+
+                if ((!state.obtuseChallenge.keepBase || !p1 || !p2) && state.segments.length >= 1) {
+                    const s0 = state.segments[0];
+                    if (s0.p1.y === s0.p2.y && s0.p1.x !== s0.p2.x) {
+                        p1 = s0.p1;
+                        p2 = s0.p2;
+                        baseType = 'horizontal';
+                    } else if (s0.p1.x === s0.p2.x && s0.p1.y !== s0.p2.y) {
+                        p1 = s0.p1;
+                        p2 = s0.p2;
+                        baseType = 'vertical';
+                    }
+                }
+
+                if (!p1 || !p2 || !baseType) return;
+
+                ctx.save();
+                if (baseType === 'horizontal') {
+                    const yGrid = p1.y;
+                    const leftEnd = gridToPix(0, yGrid);
+                    const rightEnd = gridToPix(GRID_COLS, yGrid);
+
+                    // Draw full horizontal base extension line across the grid
+                    ctx.beginPath();
+                    ctx.setLineDash([5, 5]);
+                    ctx.moveTo(leftEnd.x, leftEnd.y);
+                    ctx.lineTo(rightEnd.x, rightEnd.y);
+                    ctx.strokeStyle = '#64748b';
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+
+                    // Label the extension line & "底邊範圍之外" zones
+                    const minBx = Math.min(p1.x, p2.x);
+                    const maxBx = Math.max(p1.x, p2.x);
+                    if (maxBx < GRID_COLS - 1) {
+                        const extLabelPos = gridToPix(Math.min(GRID_COLS - 1.5, maxBx + 2.0), yGrid);
+                        drawCanvasTag(extLabelPos.x, extLabelPos.y + 18, '底邊延長線（底邊範圍之外）', '#475569', '#f8fafc', '#94a3b8');
+                    }
+                    if (minBx > 1) {
+                        const extLabelPos = gridToPix(Math.max(1.5, minBx - 2.0), yGrid);
+                        drawCanvasTag(extLabelPos.x, extLabelPos.y + 18, '底邊延長線（底邊範圍之外）', '#475569', '#f8fafc', '#94a3b8');
+                    }
+
+                    // While drawing segment 2 (hovering a candidate vertex C), preview the perpendicular height dropping onto the extension line!
+                    if (state.segments.length === 1 && state.hoverGridPos && state.hoverGridPos.y !== yGrid) {
+                        const cand = state.hoverGridPos;
+                        const isOutside = (cand.x < minBx || cand.x > maxBx);
+                        const pCand = gridToPix(cand.x, cand.y);
+                        const pFoot = gridToPix(cand.x, yGrid);
+
+                        ctx.beginPath();
+                        ctx.setLineDash([4, 4]);
+                        ctx.moveTo(pCand.x, pCand.y);
+                        ctx.lineTo(pFoot.x, pFoot.y);
+                        ctx.strokeStyle = isOutside ? '#be123c' : '#94a3b8';
+                        ctx.lineWidth = 2.2;
+                        ctx.stroke();
+                        ctx.setLineDash([]);
+
+                        // Right-angle symbol on the extension line
+                        const sq = 9;
+                        const dirX = pCand.x >= gridToPix((minBx + maxBx) / 2, yGrid).x ? -1 : 1;
+                        const dirY = pCand.y < pFoot.y ? -1 : 1;
+                        ctx.beginPath();
+                        ctx.moveTo(pFoot.x + dirX * sq, pFoot.y);
+                        ctx.lineTo(pFoot.x + dirX * sq, pFoot.y + dirY * sq);
+                        ctx.lineTo(pFoot.x, pFoot.y + dirY * sq);
+                        ctx.strokeStyle = isOutside ? '#be123c' : '#64748b';
+                        ctx.lineWidth = 1.8;
+                        ctx.stroke();
+
+                        const statusLabel = isOutside
+                            ? '高（垂直連到底邊延長線 ✓）'
+                            : '目前高仍在底邊範圍內（請移到底邊左／右範圍外）';
+                        drawCanvasTag(
+                            pCand.x,
+                            pCand.y - 18,
+                            statusLabel,
+                            isOutside ? '#9f1239' : '#475569',
+                            isOutside ? '#ffe4e6' : '#f1f5f9',
+                            isOutside ? '#e11d48' : '#94a3b8'
+                        );
+                    }
+                } else if (baseType === 'vertical') {
+                    const xGrid = p1.x;
+                    const bottomEnd = gridToPix(xGrid, 0);
+                    const topEnd = gridToPix(xGrid, GRID_ROWS);
+
+                    ctx.beginPath();
+                    ctx.setLineDash([5, 5]);
+                    ctx.moveTo(bottomEnd.x, bottomEnd.y);
+                    ctx.lineTo(topEnd.x, topEnd.y);
+                    ctx.strokeStyle = '#64748b';
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+
+                    const minBy = Math.min(p1.y, p2.y);
+                    const maxBy = Math.max(p1.y, p2.y);
+                    if (maxBy < GRID_ROWS - 1) {
+                        const extLabelPos = gridToPix(xGrid, Math.min(GRID_ROWS - 0.8, maxBy + 1.5));
+                        drawCanvasTag(extLabelPos.x + 64, extLabelPos.y, '底邊延長線（範圍外）', '#475569', '#f8fafc', '#94a3b8');
+                    }
+
+                    if (state.segments.length === 1 && state.hoverGridPos && state.hoverGridPos.x !== xGrid) {
+                        const cand = state.hoverGridPos;
+                        const isOutside = (cand.y < minBy || cand.y > maxBy);
+                        const pCand = gridToPix(cand.x, cand.y);
+                        const pFoot = gridToPix(xGrid, cand.y);
+
+                        ctx.beginPath();
+                        ctx.setLineDash([4, 4]);
+                        ctx.moveTo(pCand.x, pCand.y);
+                        ctx.lineTo(pFoot.x, pFoot.y);
+                        ctx.strokeStyle = isOutside ? '#be123c' : '#94a3b8';
+                        ctx.lineWidth = 2.2;
+                        ctx.stroke();
+                        ctx.setLineDash([]);
+
+                        const statusLabel = isOutside
+                            ? '高（垂直連到底邊延長線 ✓）'
+                            : '目前高仍在底邊範圍內（請移到底邊上／下範圍外）';
+                        drawCanvasTag(
+                            pCand.x,
+                            pCand.y - 18,
+                            statusLabel,
+                            isOutside ? '#9f1239' : '#475569',
+                            isOutside ? '#ffe4e6' : '#f1f5f9',
+                            isOutside ? '#e11d48' : '#94a3b8'
+                        );
+                    }
+                }
+                ctx.restore();
+            }
+<!-- ... existing code ... -->
+            /**
+             * Updates the Drawing Progress Banner and Vertex Status Badge
+             */
+            function updateCanvasBadges() {
+                const segCount = state.segments.length;
+
+                if (segCount === 0) {
+                    drawingLineCountTag.textContent = '第 1 / 3 條線';
+                    drawingProgressDot.className = 'w-2.5 h-2.5 rounded-full bg-amber-600 shrink-0';
+                    drawingProgressBanner.className = 'mb-2.5 bg-amber-50 border-2 border-slate-700 text-slate-800 px-3.5 py-2 rounded-xl text-xs font-bold flex items-center justify-between gap-2';
+                    if (state.activeStartPoint) {
+                        drawingProgressText.textContent = `已選定起點 A (${state.activeStartPoint.x}, ${state.activeStartPoint.y})，請點選或拉至另一個格點畫出第 1 條直線`;
+                        vertexStatusBadge.textContent = `繪製第 1 條線中：起點 A (${state.activeStartPoint.x}, ${state.activeStartPoint.y})`;
+                    } else {
+                        drawingProgressText.textContent = '請在方格紙上畫出第 1 條直線（在格點按住拉出直線，或依序點選起點與終點）';
+                        vertexStatusBadge.textContent = '已畫直線：0 / 3 條';
+                    }
+                    vertexStatusBadge.className = 'text-xs font-bold px-2.5 py-1 rounded-lg bg-amber-100 text-amber-950 border border-amber-700';
+                } else if (segCount === 1) {
+                    const s0 = state.segments[0];
+                    const isFirstSlanted = (s0.p1.x !== s0.p2.x && s0.p1.y !== s0.p2.y);
+                    drawingLineCountTag.textContent = '第 2 / 3 條線';
+                    drawingProgressDot.className = 'w-2.5 h-2.5 rounded-full bg-sky-600 shrink-0';
+                    if (isFirstSlanted) {
+                        drawingProgressBanner.className = 'mb-2.5 bg-amber-100 border-2 border-amber-800 text-amber-950 px-3.5 py-2 rounded-xl text-xs font-bold flex items-center justify-between gap-2';
+                        drawingProgressText.textContent = '小提示：先把第一條線畫在水平或垂直的格線上作為「底」，之後會更容易找出垂直的「高」喔！';
+                    } else {
+                        drawingProgressBanner.className = 'mb-2.5 bg-sky-50 border-2 border-slate-700 text-slate-800 px-3.5 py-2 rounded-xl text-xs font-bold flex items-center justify-between gap-2';
+                        drawingProgressText.textContent = '已完成第 1 條線！請從端點畫出第 2 條直線，決定第 3 個頂點 C 的位置';
+                    }
+                    vertexStatusBadge.textContent = '已畫直線：1 / 3 條';
+                    vertexStatusBadge.className = 'text-xs font-bold px-2.5 py-1 rounded-lg bg-sky-100 text-sky-950 border border-sky-700';
+                } else if (segCount === 2) {
+<!-- ... existing code ... -->
+                // 2. Check if 3 vertices are collinear (Area = 0)
+                if (drawnArea === 0) {
+                    Sound.nudge();
+                    state.lastCheckStatus = 'wrong';
+                    renderCollinearReminderCard();
+                    drawNotebookCanvas();
+                    return;
+                }
+
+                // 2.5 Check if all 3 sides are slanted (!isAxisAligned) -> Show gentle reminder
+                if (info.type === 'slanted') {
+                    Sound.nudge();
+                    saveCurrentTriangleAsDraft('上一次的草稿');
+                    renderSlantedReminderCard(info);
+                    drawNotebookCanvas();
+                    return;
+                }
+
+                // 3. Special Validation if in Obtuse Triangle (External Height) Challenge Mode
+                if (state.obtuseChallenge.active) {
+                    const isAreaMatch = Math.abs(drawnArea - targetArea) < 1e-6;
+                    if (isAreaMatch && info.isExternalHeight) {
+                        state.obtuseChallenge.completed = true;
+                        renderCorrectStampFeedback(info, drawnArea, targetArea, true);
+                    } else if (isAreaMatch && !info.isExternalHeight) {
+                        // Area is right, but height is still inside the base segment!
+                        Sound.nudge();
+                        state.lastCheckStatus = 'wrong';
+                        saveCurrentTriangleAsDraft('上一次的草稿');
+                        feedbackMemoPad.className = 'sticky-note bg-[#e0e7ff] rounded-2xl p-4 sm:p-5 transition-all';
+                        memoTitle.textContent = '面積雖然正確，但高仍在底邊範圍內喔！';
+                        memoSubtitle.textContent = '進階挑戰：試著讓垂直高落在灰色虛線「底邊延長線」上';
+                        memoContentArea.innerHTML = `
+                            <div class="bg-white border-2 border-indigo-900 rounded-xl p-3.5 space-y-2.5 text-xs sm:text-sm leading-relaxed text-slate-800">
+                                <p class="font-bold text-indigo-950">
+                                    面積雖然正確，但這個三角形的高仍然落在底邊範圍內喔！請試著把第三個頂點畫在底邊左方或右方的範圍之外（讓垂直高落在灰色虛線『底邊延長線』上）。
+                                </p>
+                                <button id="retryObtuseVertexBtn" class="stationery-btn w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-3 rounded-xl text-xs sm:text-sm cursor-pointer">
+                                    保留底邊再試一次
+                                </button>
+                            </div>
+                        `;
+                        const retryBtn = document.getElementById('retryObtuseVertexBtn');
+                        if (retryBtn) {
+                            retryBtn.addEventListener('click', () => {
+                                Sound.click();
+                                // Lock the current triangle's base so the student can immediately retry with the base preserved
+                                state.obtuseChallenge.keepBase = true;
+                                state.obtuseChallenge.lockedBaseP1 = { ...info.baseP1 };
+                                state.obtuseChallenge.lockedBaseP2 = { ...info.baseP2 };
+                                state.obtuseChallenge.baseType = info.type;
+                                state.obtuseChallenge.baseLength = info.base;
+                                state.obtuseChallenge.targetHeight = info.height;
+                                resetToLockedBaseInChallenge();
+                            });
+                        }
+                    } else {
+                        saveCurrentTriangleAsDraft('上一次的草稿');
+                        renderSocraticGuidedDiscovery(info, drawnArea, targetArea);
+                    }
+                    drawNotebookCanvas();
+                    return;
+                }
+
+                // 4. Compare Drawn Area vs Target Area in normal mode
+                if (Math.abs(drawnArea - targetArea) < 1e-6) {
+                    renderCorrectStampFeedback(info, drawnArea, targetArea, false);
+                } else {
+                    saveCurrentTriangleAsDraft('上一次的草稿');
+                    renderSocraticGuidedDiscovery(info, drawnArea, targetArea);
+                }
+
+                drawNotebookCanvas();
+            }
+
+            /**
+             * Starts the Obtuse Triangle (External Height) Challenge.
+             * @param {Object} info - Analyzed info of the student's just-completed correct triangle
+             * @param {boolean} keepBase - true to pre-draw base AB; false to let student draw all 3 lines from scratch
+             */
+            function startObtuseTriangleChallenge(info, keepBase = true) {
+                if (!info || (info.type !== 'horizontal' && info.type !== 'vertical')) return;
+                Sound.click();
+
+                // Save the student's original correct triangle as "上一次的草稿" (previousDraft)!
+                saveCurrentTriangleAsDraft('上一次的草稿');
+
+                // If the base lies right against both edges of the grid so there is no room to extend outside,
+                // shift the locked base toward the middle of the grid so the student has plenty of extension room.
+                let b1 = { x: info.baseP1.x, y: info.baseP1.y };
+                let b2 = { x: info.baseP2.x, y: info.baseP2.y };
+                if (info.type === 'horizontal') {
+                    const minX = Math.min(b1.x, b2.x);
+                    const maxX = Math.max(b1.x, b2.x);
+                    if (minX === 0 && maxX === GRID_COLS) {
+                        b1 = { x: 2, y: info.baseP1.y };
+                        b2 = { x: Math.min(GRID_COLS - 3, 2 + info.base), y: info.baseP2.y };
+                    }
+                } else if (info.type === 'vertical') {
+                    const minY = Math.min(b1.y, b2.y);
+                    const maxY = Math.max(b1.y, b2.y);
+                    if (minY === 0 && maxY === GRID_ROWS) {
+                        b1 = { x: info.baseP1.x, y: 2 };
+                        b2 = { x: info.baseP2.x, y: Math.min(GRID_ROWS - 3, 2 + info.base) };
+                    }
+                }
+
+                state.obtuseChallenge = {
+                    active: true,
+                    keepBase: keepBase,
+                    completed: false,
+                    lockedBaseP1: b1,
+                    lockedBaseP2: b2,
+                    baseType: info.type,
+                    baseLength: info.base,
+                    targetHeight: info.height,
+                    refPoints: state.points.map(p => ({ ...p }))
+                };
+
+                obtuseChallengeBanner.classList.remove('hidden');
+                if (keepBase) {
+                    obtuseChallengeBannerText.textContent =
+                        `進階挑戰中：已保留底邊 AB（${info.base} cm）與「上一次的草稿」！請把第 3 個頂點 C 畫在「底邊範圍之外」（灰色虛線底邊延長線上方或下方），看看面積會不會變？`;
+                    resetToLockedBaseInChallenge();
+                } else {
+                    obtuseChallengeBannerText.textContent =
+                        `進階挑戰中：請自己從頭畫出一個面積為 ${state.targetArea} cm² 且「高在圖形外」的鈍角三角形（可參考方格紙上的「上一次的草稿」）！`;
+                    state.segments = [];
+                    state.points = [];
+                    state.activeStartPoint = null;
+                    state.lastCheckStatus = null;
+                    state.step2Verified = false;
+                    stampContainer.classList.add('hidden');
+                    syncVerticesFromSegments();
+                    drawNotebookCanvas();
+                }
+
+                feedbackMemoPad.className = 'sticky-note bg-[#e0e7ff] rounded-2xl p-4 sm:p-5 transition-all';
+                memoTitle.textContent = '進階挑戰解鎖：高在圖形外的鈍角三角形';
+                memoSubtitle.textContent = '試著保持同一條底邊，但把第三個頂點畫在底邊範圍之外，看看面積會不會變？';
+                stampContainer.classList.add('hidden');
+                memoContentArea.innerHTML = `
+                    <div class="bg-white/95 border-2 border-indigo-900 rounded-xl p-3.5 space-y-2 text-xs text-slate-800 leading-relaxed">
+                        <div class="font-black text-indigo-950">挑戰引導說明：</div>
+                        <ol class="list-decimal list-inside space-y-1.5">
+                            <li>方格紙上已用淺灰色虛線保留你剛才畫的<strong>「上一次的草稿」</strong>作為對照。</li>
+                            <li>${keepBase ? `系統已為你保留同一條<strong>底邊 AB（${info.base} cm）</strong>，並畫出灰色虛線<strong>「底邊延長線」</strong>。` : '請先在水平或垂直格線上畫出一條底邊，系統會自動標出「底邊延長線」。'}</li>
+                            <li>請把第三個頂點 C 畫在<strong>底邊範圍之外</strong>（讓垂直的「高」落在灰色虛線<strong>底邊延長線</strong>上），連回起點圍成鈍角三角形後按「<strong>檢查答案</strong>」！</li>
+                        </ol>
+                    </div>
+                `;
+            }
+
+            function resetToLockedBaseInChallenge() {
+                if (!state.obtuseChallenge.active) return;
+                if (!state.obtuseChallenge.keepBase) {
+                    state.segments = [];
+                    state.points = [];
+                    state.activeStartPoint = null;
+                    state.lastCheckStatus = null;
+                    state.step2Verified = false;
+                    stampContainer.classList.add('hidden');
+                    syncVerticesFromSegments();
+                    drawNotebookCanvas();
+                    return;
+                }
+                const b1 = state.obtuseChallenge.lockedBaseP1;
+                const b2 = state.obtuseChallenge.lockedBaseP2;
+                state.segments = [
+                    { p1: { x: b1.x, y: b1.y }, p2: { x: b2.x, y: b2.y } }
+                ];
+                state.activeStartPoint = { x: b2.x, y: b2.y };
+                state.lastCheckStatus = null;
+                state.step2Verified = false;
+                stampContainer.classList.add('hidden');
+                syncVerticesFromSegments();
+                drawNotebookCanvas();
+            }
+
+            function exitObtuseChallengeMode() {
+                Sound.click();
+                state.obtuseChallenge.active = false;
+                obtuseChallengeBanner.classList.add('hidden');
+                syncVerticesFromSegments();
+                renderStandbyMemo();
+                drawNotebookCanvas();
+            }
+
+            /**
+             * When Correct: Stamp the notebook, show verification of their triangle, record in Stamp Book,
+             * and unlock the Obtuse Triangle (External Height) Challenge!
+             */
+            function renderCorrectStampFeedback(info, drawnArea, targetArea, isFromObtuseChallenge = false) {
+                Sound.stamp();
+                state.lastCheckStatus = 'correct';
+                stampContainer.classList.remove('hidden');
+
+                if (isFromObtuseChallenge) {
+                    stampTopLabel.textContent = '等底等高';
+                    stampMainLabel.textContent = '進階挑戰完成';
+                } else {
+                    stampTopLabel.textContent = '五上數學';
+                    stampMainLabel.textContent = '面積正確';
+                }
+
+                feedbackMemoPad.className = 'sticky-note bg-[#d1fae5] rounded-2xl p-4 sm:p-5 transition-all';
+                memoTitle.textContent = isFromObtuseChallenge
+                    ? '進階挑戰完成！成功畫出高在圖形外的鈍角三角形！'
+                    : '答對了！所畫的三角形面積完全正確！';
+                memoSubtitle.textContent = isFromObtuseChallenge
+                    ? `等底等高驗證：底 ${info.base} cm × 外高 ${info.height} cm ÷ 2 = ${targetArea} cm²`
+                    : `成功繪出面積為 ${targetArea} cm² 的三角形`;
+
+                const angleType = classifyTriangleAngles(state.points);
+                let shapeKey = '';
+                let shapeDesc = '';
+
+                if (info.type === 'horizontal' || info.type === 'vertical') {
+                    const extTag = info.isExternalHeight ? '・高在圖形外' : '';
+                    shapeKey = `${info.base}x${info.height}-${angleType}${extTag}`;
+                    shapeDesc = `底 ${info.base} cm、高 ${info.height} cm（${angleType}${extTag}）`;
+                } else {
+                    shapeKey = `slanted-${state.points.map(p => `${p.x}_${p.y}`).join('-')}`;
+                    shapeDesc = `斜邊三角形（${angleType}）`;
+                }
+
+                const isNewShape = !state.collectedShapes.has(shapeKey);
+                if (isNewShape) {
+                    state.collectedShapes.set(shapeKey, shapeDesc);
+                    renderStampBook();
+                }
+
+                let verificationBox = '';
+                if (info.type === 'horizontal' || info.type === 'vertical') {
+                    verificationBox = `
+                        <div class="bg-white border-2 border-slate-800 rounded-xl p-3 text-center">
+                            <div class="text-xs font-bold text-slate-500 mb-1">面積算式驗證：</div>
+                            <div class="text-base sm:text-lg font-round font-black text-slate-900">
+                                底 <span class="text-sky-700">${info.base} cm</span> × ${info.isExternalHeight ? '高（外高）' : '高'} <span class="text-rose-700">${info.height} cm</span> ÷ 2 = <span class="text-emerald-700">${drawnArea} cm²</span>
+                            </div>
+                            <div class="text-xs font-bold text-slate-600 mt-1">
+                                圖形類別：${angleType}${info.isExternalHeight ? '（垂直高落在底邊延長線上）' : ''}
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // Feature 1: Unlock Obtuse Triangle Challenge Card when student finishes an acute/right triangle
+                let obtuseChallengeCardHtml = '';
+                if (isFromObtuseChallenge || info.isExternalHeight) {
+                    obtuseChallengeCardHtml = `
+                        <div class="bg-indigo-50 border-2 border-indigo-900 rounded-xl p-3.5 text-xs sm:text-sm leading-relaxed text-indigo-950">
+                            <div class="font-black text-indigo-900 mb-1">★ 進階挑戰完成：</div>
+                            太棒了！即使第三個頂點移到底邊範圍之外，只要『<strong>底</strong>』的長度不變，從頂點垂直畫到『<strong>底邊延長線</strong>』的『<strong>高</strong>』也不變，三角形的面積就不會改變（等底等高）！注意：千萬別把斜邊當成高喔！
+                        </div>
+                    `;
+                } else if (info.type === 'horizontal' || info.type === 'vertical') {
+                    obtuseChallengeCardHtml = `
+                        <div class="bg-indigo-50 border-2 border-indigo-900 rounded-xl p-3.5 space-y-2.5 text-xs leading-relaxed text-indigo-950">
+                            <div class="flex items-center justify-between gap-2">
+                                <span class="px-2 py-0.5 bg-indigo-700 text-white rounded font-black text-xs">進階挑戰解鎖：高在圖形外的鈍角三角形</span>
+                            </div>
+                            <p class="text-slate-800 font-bold text-xs sm:text-sm">
+                                「試著保持同一條底邊，但把第三個頂點畫在底邊範圍之外，看看面積會不會變？」
+                            </p>
+                            <div class="flex flex-col gap-2 pt-1">
+                                <button id="startObtuseKeepBaseBtn" class="stationery-btn w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-3 rounded-xl text-xs sm:text-sm flex items-center justify-center gap-1.5 cursor-pointer">
+                                    <span>開始挑戰（自動保留目前底邊）</span>
+                                </button>
+                                <button id="startObtuseScratchBtn" class="stationery-btn w-full bg-white hover:bg-indigo-100 text-indigo-950 font-bold py-1.5 px-3 rounded-xl text-xs flex items-center justify-center gap-1.5 cursor-pointer">
+                                    <span>自己從頭畫一個鈍角三角形</span>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                memoContentArea.innerHTML = `
+                    ${verificationBox}
+                    ${obtuseChallengeCardHtml}
+                    <div class="bg-emerald-50 border-2 border-emerald-700/60 rounded-xl p-3 text-xs leading-relaxed text-emerald-950 font-medium">
+                        <strong>更多練習：</strong><br>
+                        你也可以按「<strong>全部擦掉重畫</strong>」，試試看畫出另一個面積同樣是 <strong>${targetArea} cm²</strong>，但<strong>不同底高組合</strong>的三角形。
+                    </div>
+                `;
+
+                const keepBaseBtn = document.getElementById('startObtuseKeepBaseBtn');
+                if (keepBaseBtn) {
+                    keepBaseBtn.addEventListener('click', () => startObtuseTriangleChallenge(info, true));
+                }
+                const scratchBtn = document.getElementById('startObtuseScratchBtn');
+                if (scratchBtn) {
+                    scratchBtn.addEventListener('click', () => startObtuseTriangleChallenge(info, false));
+                }
+            }
+<!-- ... existing code ... -->
+                // Step 3: Direction of adjustment (Only tells them how to redraw using the previous draft as reference, NEVER the exact number!)
+                let step3AdviceText = '';
+                if (isTooLarge) {
+                    step3AdviceText = `
+                        因為你剛才畫的三角形面積<strong>偏大</strong>，方格紙上已為你保留淺灰色的「<strong>上一次的草稿</strong>」。請按「<strong>全部擦掉重畫</strong>」，對照草稿將<strong>底邊畫短一點</strong>，或是把第三個頂點<strong>畫得離底邊近一點（把高壓低）</strong>，直到「底 × 高」剛好等於你在思考一算出的數字。
+                    `;
+                } else {
+                    step3AdviceText = `
+                        因為你剛才畫的三角形面積<strong>偏小</strong>，方格紙上已為你保留淺灰色的「<strong>上一次的草稿</strong>」。請按「<strong>全部擦掉重畫</strong>」，對照草稿將<strong>底邊畫長一點</strong>，或是把第三個頂點<strong>畫得離底邊遠一點（把高拉高）</strong>，直到「底 × 高」剛好等於你在思考一算出的數字。
+                    `;
+                }
+
+                const obtuseExternalHeightReminder = (state.obtuseChallenge.active || info.isExternalHeight) ? `
+                    <div class="bg-indigo-50 border-2 border-indigo-800 rounded-xl p-3 text-xs text-indigo-950 font-bold leading-relaxed">
+                        小提醒：當頂點在底邊範圍之外時，『高』是從頂點垂直連到灰色虛線『底邊延長線』的格數，而不是斜邊的長度喔！
+                    </div>
+                ` : '';
+
+                memoContentArea.innerHTML = `
+                    ${obtuseExternalHeightReminder}
+                    <!-- Visual Scale / Area Direction Indicator -->
+                    <div class="bg-white border-2 border-slate-800 rounded-xl p-3">
+<!-- ... existing code ... -->
