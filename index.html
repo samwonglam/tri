@@ -759,7 +759,7 @@
             吉伊卡哇的三角形除草領地任務
             <span class="grade-pill">小五數學・面積與方格紙</span>
           </h1>
-          <p>先設定除草領地的目標面積，再在 1 cm² 方格紙上畫 3 條直線圍成三角形，最後找小八貓檢查答案！</p>
+          <p>先設定除草領地的正整數目標面積，再在 1 cm² 方格紙上畫 3 條直線圍成三角形，最後找小八貓檢查答案！</p>
         </div>
       </div>
 
@@ -772,14 +772,14 @@
     <section class="mission-bar" aria-label="設定目標面積">
       <div class="mission-left">
         <span class="step-tag">步驟 1</span>
-        <label for="targetAreaInput" class="mission-label">輸入今天要圍出的三角形領地面積：</label>
+        <label for="targetAreaInput" class="mission-label">輸入今天要圍出的三角形領地面積（僅限正整數）：</label>
         <div class="area-input-box">
           <input
             type="number"
             id="targetAreaInput"
-            min="0.5"
+            min="1"
             max="45"
-            step="0.5"
+            step="1"
             value="6"
           />
           <span class="area-unit">cm²</span>
@@ -788,12 +788,12 @@
       </div>
 
       <div class="preset-group">
-        <span class="preset-label">委託板快速選題：</span>
+        <span class="preset-label">委託板快速選題（整數）：</span>
         <button type="button" class="preset-chip active" data-area="6">6 cm²</button>
         <button type="button" class="preset-chip" data-area="8">8 cm²</button>
-        <button type="button" class="preset-chip" data-area="9">9 cm²</button>
+        <button type="button" class="preset-chip" data-area="10">10 cm²</button>
         <button type="button" class="preset-chip" data-area="12">12 cm²</button>
-        <button type="button" class="preset-chip" data-area="7.5">7.5 cm²</button>
+        <button type="button" class="preset-chip" data-area="16">16 cm²</button>
         <button type="button" class="preset-chip" id="randomMissionBtn">🎲 兔兔隨機委託</button>
       </div>
     </section>
@@ -817,7 +817,7 @@
 
         <div class="gentle-banner" id="slantedWarningBanner">
           <span id="slantedWarningText">
-            💡 小八貓提醒：這個三角形沒有水平 or 垂直的邊，在小五階段較難直接找出底和高。要不要擦掉重畫，先把第一條線畫在水平或垂直的格線上？
+            💡 小八貓提醒：這個三角形沒有水平或垂直的邊，在小五階段較難直接找出底和高。要不要擦掉重畫，先把第一條線畫在水平或垂直的格線上？
           </span>
           <button type="button" class="btn btn-pink" id="quickResetBaseBtn">擦掉重畫（先定底邊）</button>
         </div>
@@ -1729,7 +1729,7 @@
             "speaker-usagi",
             geo.isOutsideHeight
               ? `太厲害了！！你成功畫出<strong>高在圖形外的鈍角三角形</strong>（底 ${geo.baseLen} cm、外高 ${geo.heightLen} cm），面積一樣是 <strong>${targetArea} cm²</strong>！獲得除草合格印章！`
-              : `呀哈！完全正確！你畫的三角形底是 <strong>${geo.baseLen} cm</strong>，高是 <strong>${geo.heightLen} cm</strong>，面積剛好是 <strong>${targetArea} cm²</strong>！`
+              : `呀哈! 完全正確! 你畫的三角形底是 <strong>${geo.baseLen} cm</strong>，高是 <strong>${geo.heightLen} cm</strong>，面積剛好是 <strong>${targetArea} cm²</strong>！`
           );
 
           feedbackBody.innerHTML = `
@@ -1804,7 +1804,7 @@
           `別灰心！你目前畫的三角形面積是 <strong>${geo.area} cm²</strong>，比目標的 <strong>${targetArea} cm²</strong> 還要<strong>${diffType}</strong>。跟著下面 3 個步驟想一想，很快就能畫對囉！`
         );
 
-        const doubleTarget = Math.round(targetArea * 2 * 100) / 100;
+        const doubleTarget = Math.round(targetArea * 2);
         const adjustDirectionHint =
           geo.area > targetArea
             ? "因為目前的面積<strong>偏大</strong>，重畫時可以把<strong>底邊畫短一點</strong>，或是把<strong>第 3 個頂點拉近底邊（降低高度）</strong>。"
@@ -1826,7 +1826,7 @@
             <p>三角形面積公式是「<strong>底 × 高 ÷ 2 = ${targetArea}</strong>」。那麼在除以 2 之前，「<strong>底 × 高</strong>」應該要等於多少呢？</p>
             <div class="inline-quiz">
               <span>底 × 高 =</span>
-              <input type="number" step="0.5" class="mini-input" id="quizProductInput" placeholder="?" />
+              <input type="number" step="1" class="mini-input" id="quizProductInput" placeholder="?" />
               <span>cm²</span>
               <button type="button" class="btn btn-pink" id="checkProductBtn">核對想法</button>
             </div>
@@ -1857,11 +1857,11 @@
         `;
 
         document.getElementById("checkProductBtn").addEventListener("click", () => {
-          const val = parseFloat(document.getElementById("quizProductInput").value);
+          const val = parseInt(document.getElementById("quizProductInput").value, 10);
           const msgEl = document.getElementById("quizProductMsg");
-          if (Math.abs(val - doubleTarget) < 0.001) {
+          if (val === doubleTarget) {
             msgEl.className = "quiz-msg ok";
-            msgEl.textContent = `✓ 答對了！底 × 高 = ${doubleTarget}。只要想出哪兩個數相乘等於 ${doubleTarget}，就能作為新的底和高！`;
+            msgEl.textContent = `✓ 答對了！底 × 高 = ${doubleTarget}。只要想出哪兩個整數相乘等於 ${doubleTarget}，就能作為新的底和高！`;
           } else {
             msgEl.className = "quiz-msg err";
             msgEl.textContent = `再想一想：什麼數除以 2 會等於 ${targetArea} 呢？試著把 ${targetArea} × 2 算算看！`;
@@ -1919,16 +1919,16 @@
       }
 
       function setMissionTargetArea(newArea) {
-        const parsed = parseFloat(newArea);
-        if (isNaN(parsed) || parsed < 0.5 || parsed > 45) {
-          alert("請輸入 0.5 到 45 之間的面積數值！");
+        const parsed = parseInt(newArea, 10);
+        if (isNaN(parsed) || parsed < 1 || parsed > 45) {
+          alert("請輸入 1 到 45 之間的整數面積！");
           return;
         }
-        targetArea = Math.round(parsed * 2) / 2;
+        targetArea = parsed;
         targetAreaInput.value = targetArea;
 
         presetChips.forEach((chip) => {
-          chip.classList.toggle("active", parseFloat(chip.dataset.area) === targetArea);
+          chip.classList.toggle("active", parseInt(chip.dataset.area, 10) === targetArea);
         });
 
         vertices = [];
@@ -1981,14 +1981,14 @@
       });
 
       randomMissionBtn.addEventListener("click", () => {
-        const pool = [4, 5, 6, 7.5, 8, 9, 10, 12, 14, 15, 16, 18];
+        const pool = [4, 6, 8, 9, 10, 12, 14, 15, 16, 18, 20, 24];
         const pick = pool[Math.floor(Math.random() * pool.length)];
         setMissionTargetArea(pick);
       });
 
       const urlParams = new URLSearchParams(window.location.search);
-      const urlTarget = parseFloat(urlParams.get("target"));
-      if (!isNaN(urlTarget) && urlTarget >= 0.5 && urlTarget <= 45) {
+      const urlTarget = parseInt(urlParams.get("target"), 10);
+      if (!isNaN(urlTarget) && urlTarget >= 1 && urlTarget <= 45) {
         setMissionTargetArea(urlTarget);
       } else {
         setMissionTargetArea(6);
